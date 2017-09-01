@@ -78,7 +78,9 @@ namespace Microsoft.AspNetCore.Mvc.ViewFeatures.Internal
             // the end user is going to see an error page anyway and also it helps us in avoiding
             // accessing resources like Session too late in the request lifecyle where SessionFeature might
             // not be available.
-            if (context.Exception != null && !context.ExceptionHandled)
+            if (!context.HttpContext.Response.HasStarted &&
+                context.Exception != null &&
+                !context.ExceptionHandled)
             {
                 context.HttpContext.Items.Add(TempDataUnhandledExceptionKey, true);
             }
